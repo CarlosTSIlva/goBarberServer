@@ -19,6 +19,8 @@ class User {
 
   @Column()
   password: string;
+  @Column()
+  avatar: string;
 
   @CreateDateColumn()
   create_at: Date;
