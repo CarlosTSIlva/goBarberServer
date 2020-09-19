@@ -1,32 +1,30 @@
-import { getRepository, Repository } from 'typeorm';
+import { uuid } from 'uuidv4';
+import { isEqual } from 'date-fns';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppontmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 
-import Appointment from '../entities/Appointment';
+import Appointment from '../../infra/typeorm/entities/Appointment';
 
 class AppointmentsRepository implements IAppointmentsRepository {
-  private ormRepository: Repository<Appointment>;
-
-  constructor() {
-    this.ormRepository = getRepository(Appointment);
-  }
+  private appointments: Appointment[] = [];
 
   public async findByDate(date: Date): Promise<Appointment | undefined> {
-    const findAppointment = await this.ormRepository.findOne({
-      where: { date },
-    });
-
-    return findAppointment;
+    const findApppointment = this.appointments.find(appointment =>
+      isEqual(appointment.date, date),
+    );
+    return findApppointment;
   }
+
   public async create({
     provider_id,
     date,
   }: ICreateAppontmentDTO): Promise<Appointment> {
-    const appointment = this.ormRepository.create({ provider_id, date });
+    const appointment = new Appointment();
 
-    await this.ormRepository.save(appointment);
+    Object.assign(appointment, { id: uuid(), date, provider_id });
 
+    this.appointments.push(appointment);
     return appointment;
   }
 }

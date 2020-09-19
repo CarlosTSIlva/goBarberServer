@@ -19,6 +19,7 @@ class CrateAppointmentService {
 
   public async execute({ date, provider_id }: IReq): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
+
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
     );
