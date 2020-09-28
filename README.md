@@ -48,7 +48,7 @@ Abra o terminal do seu sistema operacional e execute os seguintes comandos:
 
 ```bash
   # Clonar o repositório
-  git clone https://github.com/antonylemos/gobarber-api.git
+  git clone https://github.com/CarlosTeixeira615/Node_com_typescript
   # Entrar no diretório
   cd gobarber-api
   # Instalar as dependências
