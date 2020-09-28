@@ -28,7 +28,7 @@ describe('CreateAppointment', () => {
       date: appointmentDate,
       provider_id: '123456',
     });
-    expect(
+    await expect(
       crateAppointment.execute({
         date: appointmentDate,
         provider_id: '123456',
