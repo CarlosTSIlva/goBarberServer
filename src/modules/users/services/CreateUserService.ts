@@ -1,7 +1,8 @@
+import { injectable, inject } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUserRepository';
-import { injectable, inject } from 'tsyringe';
-import IHashProvider from '../providers/HashProvider/models/IHasheProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 import User from '../infra/typeorm/entities/Users';
 
@@ -10,7 +11,8 @@ interface IReq {
   email: string;
   password: string;
 }
-injectable();
+
+@injectable()
 class CreateUserService {
   constructor(
     @inject('UsersRepository')
@@ -24,10 +26,11 @@ class CreateUserService {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
-      throw new AppError('Email address already used.', 401);
+      throw new AppError('Email address already used.', 400);
     }
 
     const hashedPassord = await this.hashProvider.generateHash(password);
+
     const user = await this.usersRepository.create({
       name,
       email,

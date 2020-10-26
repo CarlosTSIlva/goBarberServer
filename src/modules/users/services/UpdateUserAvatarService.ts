@@ -9,7 +9,8 @@ interface IReq {
   user_id: string;
   avatarFilename: string;
 }
-injectable();
+
+@injectable()
 class UpdateUserAvatarService {
   constructor(
     @inject('UsersRepository')
@@ -23,7 +24,7 @@ class UpdateUserAvatarService {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('Only authenticated users can change avatar.', 401);
+      throw new AppError('Only authenticated users can change avatar.', 400);
     }
     if (user.avatar) {
       await this.storageProvider.deleteFile(user.avatar);

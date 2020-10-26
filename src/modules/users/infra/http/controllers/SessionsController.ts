@@ -14,7 +14,8 @@ export default class SessionsController {
       password,
     });
 
+    delete user.password;
 
-    return res.json({ user: classToClass(user), token })
+    return res.json({ user: classToClass(user), token });
   }
 }
