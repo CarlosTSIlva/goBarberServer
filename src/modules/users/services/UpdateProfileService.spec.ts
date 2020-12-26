@@ -1,8 +1,9 @@
+import AppError from '@shared/errors/AppError';
+
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import UpdateProfileService from './UpdateProfileService';
 
-import AppError from '@shared/errors/AppError';
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let updateProfile: UpdateProfileService;
@@ -44,24 +45,24 @@ describe('updateProfile', () => {
     expect(updateUser.email).toBe('carlosEdis@hotmail.com');
   });
 
-  it('shold not be able to change another user email ', async () => {
+  it('shold not be able to change another user email', async () => {
     await fakeUsersRepository.create({
-      name: 'carlos Silva',
-      email: 'carlosEdis@hotmail.com',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
       password: '123456',
     });
 
     const user = await fakeUsersRepository.create({
-      name: 'carlos Silva',
-      email: 'teste@hotmail.com',
+      name: 'Test',
+      email: 'test@example.com',
       password: '123456',
     });
 
-    expect(
+    await expect(
       updateProfile.execute({
         user_id: user.id,
-        name: 'JCarlos',
-        email: 'carlosEdis@hotmail.com',
+        name: 'John Doe',
+        email: 'johndoe@example.com',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

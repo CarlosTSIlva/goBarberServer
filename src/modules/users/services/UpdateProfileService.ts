@@ -1,9 +1,9 @@
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUserRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import User from '../infra/typeorm/entities/Users';
-import AppError from '@shared/errors/AppError';
 
 interface IReq {
   user_id: string;
@@ -31,14 +31,13 @@ class UpdateProfileService {
     password,
   }: IReq): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
-
     if (!user) {
       throw new AppError('User not found.', 400);
     }
 
-    const userWithUpdateEmail = await this.usersRepository.findByEmail(email);
+    const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
 
-    if (userWithUpdateEmail && userWithUpdateEmail.id != user_id) {
+    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
       throw new AppError('E-mail already in use.', 400);
     }
 
