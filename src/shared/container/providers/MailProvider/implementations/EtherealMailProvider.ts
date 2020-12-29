@@ -9,7 +9,6 @@ import IMailTemplateProvider from '@shared/container/providers/MailTemplateProvi
 export default class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
-  /// execute one never two
   constructor(
     @inject('MailTemplateProvider')
     private mailTemplateProvider: IMailTemplateProvider,
@@ -37,7 +36,7 @@ export default class EtherealMailProvider implements IMailProvider {
     const message = await this.client.sendMail({
       from: {
         name: from?.name || 'Equipe Gobarber',
-        address: from?.name || 'Equipe@gobarber.com.br',
+        address: from?.email || 'Equipe@gobarber.com.br',
       },
       to: {
         name: to.name,

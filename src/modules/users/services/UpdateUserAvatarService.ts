@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUserRepository';
@@ -26,14 +27,18 @@ class UpdateUserAvatarService {
     if (!user) {
       throw new AppError('Only authenticated users can change avatar.', 400);
     }
+
     if (user.avatar) {
       await this.storageProvider.deleteFile(user.avatar);
     }
+
     const filename = await this.storageProvider.saveFile(avatarFilename);
 
     user.avatar = filename;
+
     await this.usersRepository.save(user);
-    return user;
+
+    return classToClass(user);
   }
 }
 
